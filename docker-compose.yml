@@ -1,0 +1,68 @@
+﻿services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: yahoo_postgres
+    environment:
+      POSTGRES_DB: yahoo_answers
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d yahoo_answers"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - yahoo_network
+
+  redis:
+    image: redis:7-alpine
+    container_name: yahoo_redis
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - yahoo_network
+
+  analyzer:
+    build: .
+    container_name: yahoo_analyzer
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DB=yahoo_answers
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./train.csv:/app/train.csv:ro
+      - ./api_config.py:/app/api_config.py
+    restart: "no"
+    networks:
+      - yahoo_network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  yahoo_network:
+    driver: bridge
