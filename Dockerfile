@@ -6,9 +6,10 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
-# Copiar requirements
+# Copiar requirements primero para aprovechar cache de Docker
 COPY requirements.txt .
 
 # Instalar dependencias Python
@@ -20,6 +21,10 @@ COPY . .
 # Variables de entorno
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
+
+# Crear usuario no-root para seguridad
+RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
+USER appuser
 
 # Comando por defecto
 CMD ["python", "run.py"]

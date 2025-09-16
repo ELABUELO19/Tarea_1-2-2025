@@ -52,9 +52,10 @@
       - POSTGRES_PASSWORD=postgres123
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
     volumes:
       - ./train.csv:/app/train.csv:ro
-      - ./api_config.py:/app/api_config.py
     restart: "no"
     networks:
       - yahoo_network

@@ -100,16 +100,18 @@ class LLMAnalyzer:
                     # Actualizar en base de datos
                     session = self.db.get_session()
                     try:
-                        question.quality_score = quality_score
-                        question.llm_answer = f"Calidad: {result['quality']} (Provider: {result.get('provider', 'unknown')})"
+                        # CORREGIDO: Merge el objeto question a la nueva sesión
+                        merged_question = session.merge(question)
+                        merged_question.quality_score = quality_score
+                        merged_question.llm_answer = f"Calidad: {result['quality']} (Provider: {result.get('provider', 'unknown')})"
                         session.commit()
                         
                         self.stats["total_processed"] += 1
-                        logger.info(f"Procesado ID {question.id}: {result['quality']}")
+                        logger.info(f"Procesado ID {merged_question.id}: {result['quality']}")
                         
                     except Exception as e:
                         session.rollback()
-                        logger.error(f"Error guardando ID {question.id}: {e}")
+                        logger.error(f"Error guardando ID {merged_question.id}: {e}")
                     finally:
                         session.close()
                 

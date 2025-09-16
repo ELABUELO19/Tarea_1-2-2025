@@ -3,9 +3,6 @@
 *.env
 api_keys.txt
 
-# API Keys y configuración sensible
-api_config.py
-
 # Datos y resultados
 train.csv
 *.csv

@@ -3,7 +3,6 @@
 
 -- Crear extensiones útiles
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
 
 -- Crear tabla questions si no existe
 CREATE TABLE IF NOT EXISTS questions (
@@ -44,14 +43,6 @@ CREATE TRIGGER update_questions_updated_at
     FOR EACH ROW
     EXECUTE FUNCTION update_updated_at_column();
 
--- Configurar parámetros de rendimiento
-ALTER SYSTEM SET shared_preload_libraries = 'pg_stat_statements';
-ALTER SYSTEM SET track_activity_query_size = 2048;
-ALTER SYSTEM SET pg_stat_statements.track = 'all';
-
--- Crear índices adicionales para optimizar consultas
--- (Los índices principales se crean desde el código Python)
-
 -- Crear función para estadísticas
 CREATE OR REPLACE FUNCTION get_questions_stats()
 RETURNS TABLE(
@@ -66,7 +57,7 @@ BEGIN
     SELECT 
         COUNT(*) as total_questions,
         COUNT(llm_answer) as processed_questions,
-        ROUND(AVG(quality_score), 3) as avg_quality_score,
+        ROUND(AVG(quality_score)::numeric, 3) as avg_quality_score,
         MODE() WITHIN GROUP (ORDER BY original_class) as top_class,
         (SELECT question_title FROM questions ORDER BY access_count DESC LIMIT 1) as most_accessed_question
     FROM questions;
@@ -79,15 +70,8 @@ SELECT
     original_class,
     COUNT(*) as question_count,
     COUNT(llm_answer) as processed_count,
-    ROUND(AVG(quality_score), 3) as avg_score,
+    ROUND(AVG(quality_score)::numeric, 3) as avg_score,
     MAX(access_count) as max_access_count
 FROM questions
 GROUP BY original_class
 ORDER BY original_class;
-
--- Configurar logging básico
-ALTER SYSTEM SET log_statement = 'mod';
-ALTER SYSTEM SET log_min_duration_statement = 1000;
-
--- Recargar configuración
-SELECT pg_reload_conf();
