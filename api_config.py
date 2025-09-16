@@ -22,7 +22,6 @@ PROVIDERS_CONFIG = [
         "requests_per_minute": 3,
         "tokens_per_minute": 40000,
         "requests_per_day": 200,
-        "priority": 4
     }
 ]
 
@@ -53,3 +52,4 @@ def validate_api_keys():
         print(f"⚠️  API keys inválidas para: {invalid_keys}. Usando proveedores válidos.")
     
     return valid_providers if valid_providers else []
+
