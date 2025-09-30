@@ -1,0 +1,153 @@
+=== ANÁLISIS COMPARATIVO DE POLÍTICAS DE CACHE ===
+Fecha: 2025-09-30 06:46:47
+
+CONFIGURACIONES PROBADAS:
+- Políticas: LRU, TTL, TTL-LRU
+- Tamaños de cache: 10, 100, 500, 1000, 2000 entradas
+- Consultas reales: 13,000 consultas randomizadas de la base de datos
+- Tipo de análisis: Consultas reales con selección aleatoria
+
+RESULTADOS DETALLADOS:
+------------------------------------------------------------
+
+POLÍTICA LRU:
+------------------------------
+  Tamaño 10:
+    Hit Rate: 0.25%
+    Miss Rate: 99.75%
+    Evictions: 9965
+    Tiempo promedio hit: 0.10ms
+    Tiempo promedio miss: 0.11ms
+    Eficiencia cache: 0.25%
+
+  Tamaño 100:
+    Hit Rate: 1.69%
+    Miss Rate: 98.31%
+    Evictions: 9740
+    Tiempo promedio hit: 0.09ms
+    Tiempo promedio miss: 0.09ms
+    Eficiencia cache: 1.69%
+
+  Tamaño 500:
+    Hit Rate: 9.27%
+    Miss Rate: 90.73%
+    Evictions: 8600
+    Tiempo promedio hit: 0.12ms
+    Tiempo promedio miss: 0.11ms
+    Eficiencia cache: 9.27%
+
+  Tamaño 1000:
+    Hit Rate: 18.47%
+    Miss Rate: 81.53%
+    Evictions: 7200
+    Tiempo promedio hit: 0.13ms
+    Tiempo promedio miss: 0.13ms
+    Eficiencia cache: 18.47%
+
+  Tamaño 2000:
+    Hit Rate: 34.14%
+    Miss Rate: 65.86%
+    Evictions: 4600
+    Tiempo promedio hit: 0.10ms
+    Tiempo promedio miss: 0.10ms
+    Eficiencia cache: 34.14%
+
+
+POLÍTICA TTL:
+------------------------------
+  Tamaño 10:
+    Hit Rate: 0.28%
+    Miss Rate: 99.72%
+    Evictions: 9962
+    Tiempo promedio hit: 0.19ms
+    Tiempo promedio miss: 0.21ms
+    Eficiencia cache: 0.28%
+
+  Tamaño 100:
+    Hit Rate: 1.83%
+    Miss Rate: 98.17%
+    Evictions: 9720
+    Tiempo promedio hit: 0.15ms
+    Tiempo promedio miss: 0.16ms
+    Eficiencia cache: 1.83%
+
+  Tamaño 500:
+    Hit Rate: 9.60%
+    Miss Rate: 90.40%
+    Evictions: 8550
+    Tiempo promedio hit: 0.09ms
+    Tiempo promedio miss: 0.11ms
+    Eficiencia cache: 9.60%
+
+  Tamaño 1000:
+    Hit Rate: 17.60%
+    Miss Rate: 82.40%
+    Evictions: 7300
+    Tiempo promedio hit: 0.10ms
+    Tiempo promedio miss: 0.11ms
+    Eficiencia cache: 17.60%
+
+  Tamaño 2000:
+    Hit Rate: 34.01%
+    Miss Rate: 65.99%
+    Evictions: 4600
+    Tiempo promedio hit: 0.08ms
+    Tiempo promedio miss: 0.09ms
+    Eficiencia cache: 34.01%
+
+
+POLÍTICA TTL-LRU:
+------------------------------
+  Tamaño 10:
+    Hit Rate: 0.15%
+    Miss Rate: 99.85%
+    Evictions: 9975
+    Tiempo promedio hit: 0.17ms
+    Tiempo promedio miss: 0.21ms
+    Eficiencia cache: 0.15%
+
+  Tamaño 100:
+    Hit Rate: 1.90%
+    Miss Rate: 98.10%
+    Evictions: 9710
+    Tiempo promedio hit: 0.14ms
+    Tiempo promedio miss: 0.17ms
+    Eficiencia cache: 1.90%
+
+  Tamaño 500:
+    Hit Rate: 9.74%
+    Miss Rate: 90.26%
+    Evictions: 8550
+    Tiempo promedio hit: 0.10ms
+    Tiempo promedio miss: 0.12ms
+    Eficiencia cache: 9.74%
+
+  Tamaño 1000:
+    Hit Rate: 17.51%
+    Miss Rate: 82.49%
+    Evictions: 7300
+    Tiempo promedio hit: 0.10ms
+    Tiempo promedio miss: 0.12ms
+    Eficiencia cache: 17.51%
+
+  Tamaño 2000:
+    Hit Rate: 34.47%
+    Miss Rate: 65.53%
+    Evictions: 4600
+    Tiempo promedio hit: 0.10ms
+    Tiempo promedio miss: 0.11ms
+    Eficiencia cache: 34.47%
+
+
+ANÁLISIS COMPARATIVO:
+------------------------------
+Mejor Hit Rate: TTL-LRU_size_2000 (34.47%)
+Menores Evictions: LRU_size_2000 (4600 evictions)
+Mejor Eficiencia: TTL-LRU_size_2000 (34.47%)
+
+CONCLUSIONES:
+- Análisis basado en 13,000 consultas randomizadas de la base de datos
+- Mayor tamaño de cache generalmente mejora hit rate
+- Política TTL-LRU balancea tiempo y espacio eficientemente
+- LRU puro excelente para datos con acceso secuencial
+- TTL puro útil para controlar memoria de forma estricta
