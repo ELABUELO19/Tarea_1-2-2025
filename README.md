@@ -1,23 +1,19 @@
-# Sistema de Análisis de Cache con Dummy-LLM
+# Tarea Sistemas distribuidos 1
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
 
 Sistema académico para análisis comparativo de políticas de cache con **modelos LLM simulados** (Dummy-LLM), diseñado para testing y desarrollo sin dependencias externas de APIs.
 
-## 🚀 Características Principales
+## Características Principales
 
-- **🤖 Dummy-LLM**: Simulación realista de 3 modelos (GPT-4o, GPT-4o-mini, Mistral-Nemo)
-- **⚡ Cache Inteligente**: 15 configuraciones diferentes (LRU, TTL, TTL-LRU)
-- **📊 Análisis Completo**: Métricas detalladas de rendimiento y calidad
-- **🐳 Docker Ready**: Despliegue completo con un solo comando
-- **📈 Visualización**: Gráficos automáticos y reportes detallados
-- **🔄 Sin APIs Externas**: Sistema completamente autónomo
-- **📊 Dataset Real**: Yahoo Answers con 5,000+ preguntas
-- **🎯 Determinista**: Resultados consistentes y reproducibles
+- **Dummy-LLM**: Simulación realista de 3 modelos (GPT-4o, GPT-4o-mini, Mistral-Nemo)
+- ** Cache Inteligente**: 15 configuraciones diferentes (LRU, TTL, TTL-LRU)
+- ** Análisis Completo**: Métricas detalladas de rendimiento y calidad
+- ** Docker Ready**: Despliegue completo con un solo comando
+- ** Visualización**: Gráficos automáticos y reportes detallados
 
-## 📋 Componentes del Sistema
+## Componentes del Sistema
 
 ### Servicios Docker
 
@@ -25,6 +21,7 @@ Sistema académico para análisis comparativo de políticas de cache con **model
 |----------|---------|--------|-------------|
 | **PostgreSQL** | Base de datos principal | 5432 | Almacena dataset y resultados |
 | **Redis** | Sistema de cache | 6379 | Implementa políticas de cache |
+| **Load_data** | Cargar dataset | - | Cargar preguntas en la base de datos y respuestas |
 | **Analyzer** | Motor de análisis | - | Ejecuta experimentos y genera reportes |
 
 ### Componentes Python
@@ -35,7 +32,7 @@ Sistema académico para análisis comparativo de políticas de cache con **model
 - **`database.py`**: Gestor de conexión y esquema PostgreSQL
 - **`load_data.py`**: Cargador del dataset Yahoo Answers
 
-## 🚀 Inicio Rápido
+## Inicio Rápido
 
 ### Método Recomendado: Docker (Un Solo Comando)
 
@@ -48,12 +45,12 @@ docker-compose run --rm analyzer python analyzer.py --requests 1000
 ```
 
 **¿Qué incluye el análisis automático?**
-- ✅ PostgreSQL + Redis (servicios base)
-- ✅ Carga automática de 5,000 registros
-- ✅ Simulación LLM con 3 modelos
-- ✅ 15 configuraciones de cache
-- ✅ Reportes y gráficos automáticos
-- ⏱️ Tiempo estimado: 15-30 minutos
+- PostgreSQL + Redis (servicios base)
+- Carga automática de 5,000 registros
+- Simulación LLM con 3 modelos
+- 15 configuraciones de cache
+- Reportes y gráficos automáticos
+- Tiempo estimado: 15-30 minutos
 
 ### Configuraciones Personalizadas
 
@@ -68,7 +65,7 @@ docker-compose run --rm analyzer python analyzer.py --cache-only
 docker-compose run --rm analyzer python analyzer.py --test
 ```
 
-## 🤖 Sistema Dummy-LLM
+## Sistema Dummy-LLM
 
 ### Modelos Simulados
 
@@ -87,7 +84,7 @@ El Dummy-LLM genera respuestas realistas basadas en:
 - **Scoring determinista**: Asigna puntuaciones basadas en complejidad
 - **Variación simulada**: Introduce variabilidad realista en tiempos
 
-## ⚙️ Políticas de Cache Analizadas
+## Políticas de Cache Analizadas
 
 ### LRU (Least Recently Used)
 - **Descripción**: Elimina elementos menos recientemente utilizados
@@ -107,7 +104,7 @@ El Dummy-LLM genera respuestas realistas basadas en:
 - **Casos de uso**: Aplicaciones de alta demanda con datos mixtos
 - **Total**: 15 configuraciones diferentes
 
-## 📊 Métricas Analizadas
+## Métricas Analizadas
 
 ### Rendimiento de Cache
 - **Hit Rate**: Porcentaje de aciertos en cache (0-100%)
@@ -128,7 +125,7 @@ El Dummy-LLM genera respuestas realistas basadas en:
 - **Error Rate**: Tasa de errores y timeouts
 - **Scalability**: Comportamiento con diferentes volúmenes
 
-## 📈 Resultados y Reportes
+## Resultados y Reportes
 
 ### Archivos Generados
 
@@ -137,9 +134,6 @@ results/
 ├── cache_analysis_report.txt      # Reporte textual detallado
 ├── cache_analysis_charts.png      # Dashboard gráfico completo
 ├── hit_rate_comparison.png        # Comparación de hit rates
-├── multi_model_comparison.png     # Comparación entre modelos Dummy
-├── quality_vs_performance.png     # Calidad vs rendimiento
-└── dummy_llm_analysis.log         # Log detallado del proceso
 ```
 
 ### Interpretación de Resultados
@@ -149,7 +143,7 @@ results/
 - **Latency < 100ms**: Rendimiento óptimo
 - **Memory Usage < 80%**: Utilización eficiente
 
-## 🏗️ Arquitectura del Sistema
+## Arquitectura del Sistema
 
 ```mermaid
 graph TB
@@ -203,7 +197,7 @@ seaborn>=0.12.0
 python-dotenv>=1.0.0
 ```
 
-## 🐞 Troubleshooting
+## Troubleshooting
 
 ### Errores Comunes
 
@@ -233,47 +227,3 @@ docker-compose logs analyzer
 export LOG_LEVEL=DEBUG
 docker-compose run --rm analyzer python analyzer.py --debug
 ```
-
-## 📋 Requisitos del Sistema
-
-### Mínimos
-- **RAM**: 2GB disponible
-- **Storage**: 1GB espacio libre
-- **CPU**: 2 cores
-- **Docker**: 20.10+
-
-### Recomendados
-- **RAM**: 4GB+ para análisis completo
-- **Storage**: 3GB+ para resultados extensos
-- **CPU**: 4+ cores para mejor rendimiento
-
-## 🤝 Contribución
-
-1. Fork del repositorio
-2. Crear rama para feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit de cambios (`git commit -am 'Agregar nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Crear Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
-## 🆘 Soporte
-
-- **Issues**: [GitHub Issues](https://github.com/ELABUELO19/Tarea_1-2-2025/issues)
-- **Documentación**: Ver archivos en `/docs`
-- **Ejemplos**: Revisar `/examples`
-
----
-
-**Proyecto académico - Sistemas Distribuidos**  
-Sistema de análisis de cache con simulación LLM sin dependencias externas
-
-**Características clave del Dummy-LLM:**
-- ✅ Sin APIs externas ni tokens
-- ✅ Resultados deterministas y reproducibles
-- ✅ Simulación realista de 3 modelos
-- ✅ Tiempo de respuesta controlado
-- ✅ Scoring automático de calidad
-- ✅ Sistema completamente autónomo
